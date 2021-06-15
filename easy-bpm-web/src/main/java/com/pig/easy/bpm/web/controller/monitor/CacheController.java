@@ -30,7 +30,6 @@ public class CacheController extends BaseController {
     @PostMapping("/getRedisInfo")
     public JsonResult getRedisInfo() throws Exception {
 
-        //Properties info = stringRedisTemplate.getRequiredConnectionFactory().getConnection().info();
         Properties info = (Properties) redisTemplate.execute((RedisCallback<Object>) connection -> connection.info());
         Properties commandStats = (Properties) redisTemplate.execute((RedisCallback<Object>) connection -> connection.info("commandstats"));
         Object dbSize = redisTemplate.execute((RedisCallback<Object>) connection -> connection.dbSize());

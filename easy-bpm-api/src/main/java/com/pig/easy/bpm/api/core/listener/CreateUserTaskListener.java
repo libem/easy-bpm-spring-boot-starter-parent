@@ -120,6 +120,7 @@ public class CreateUserTaskListener implements TaskListener {
         delegateTask.addCandidateUser(userTaskAssignee);
         delegateTask.setAssignee(userTaskAssignee);
         delegateTask.setOwner(userTaskAssignee);
+
         TaskEntity taskEntity = (TaskEntity) delegateTask;
 
         // 修复历史记录表 不会设置assignee 及 owner 字段值,还有BUG，后续维护
