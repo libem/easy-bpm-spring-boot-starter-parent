@@ -400,7 +400,11 @@ public class FormDataServiceImpl extends BaseServiceImpl<FormDataMapper, FormDat
         }
         if (updateFormDataList.size() > 0) {
 
-            result.addAndGet(mapper.batchUpdate(updateFormDataList));
+            for(FormDataDO fdto : updateFormDataList) {
+                mapper.updateById(fdto);
+            }
+            //result.addAndGet(mapper.batchUpdate(updateFormDataList));
+            result.addAndGet(updateFormDataList.size());
         }
 
         // 保存流程变量
