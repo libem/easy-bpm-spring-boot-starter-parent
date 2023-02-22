@@ -22,9 +22,9 @@ spring:
       druid:
       # 主库数据源
         master:
-          url: jdbc:mysql://120.77.218.141:3306/easy_bpm?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+          url: jdbc:mysql://192.168.99.21:3306/easy_bpm?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
           username: root
-          password: 123456
+          password: root
             # 从库数据源
         slave:
             # 从数据源开关/默认关闭
@@ -75,7 +75,7 @@ spring:
 email:
   smtpHost: smtp.qq.com
   smtpPort: 465
-  smtpUsername: 786289666@qq.com
+  smtpUsername: 30363975@qq.com
   smtpPassword: 
 
 token:
@@ -87,8 +87,9 @@ token:
   refershExpireTime: 60
 
 redis:
-  ip: 120.77.218.141
+  ip: 192.168.99.65
   port: 6379
+  password: testtest2015
   database: 10
   timeout: 2000
   pool:

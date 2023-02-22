@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <springProperty name="log.base" source="logback.path" defaultValue="/data/logs" />
+    <springProperty name="log.base" source="logback.path" defaultValue="/var/logs/easy-bpm" />
     <!-- 模块名称， 影响日志配置名，日志文件名 -->
     <springProperty name="log.moduleName" source="logback.moduleName" defaultValue="logs" />
     <!-- 日志文件大小 -->
