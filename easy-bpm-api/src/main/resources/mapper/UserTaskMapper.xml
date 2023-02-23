@@ -364,278 +364,278 @@
     <select id="getApplyListByCondition" parameterType="com.pig.easy.bpm.api.dto.request.UserTaskInfoQueryDTO"
             resultType="com.pig.easy.bpm.api.dto.response.UserTaskInfoDTO">
         SELECT
-        a.apply_id,
-        a.apply_sn,
-        a.proc_inst_id,
-        a.apply_title,
-        a.apply_user_id,
-        a.apply_real_name,
-        a.apply_dept_id,
-        a.apply_dept_code,
-        a.apply_dept_name,
-        a.apply_company_id,
-        a.apply_company_code,
-        a.apply_company_name,
-        a.tenant_id,
-        a.process_id,
-        a.process_key,
-        a.process_name,
-        a.definition_id,
-        a.system,
-        a.platform,
-        a.parent_apply_id,
-        a.apply_status,
-        a.remarks,
-        a.valid_state,
-        a.operator_id,
-        a.operator_name,
-        a.create_time as applyDate,
-        a.update_time,
-        u.task_id,
-        u.act_task_id,
-        u.task_name,
-        u.task_node_code,
-        u.parent_task_id,
-        u.task_status,
-        u.role_group_code,
-        u.role_code,
-        u.role_name,
-        u.task_owner_user_id,
-        u.task_owner_real_name,
-        u.task_assignee_real_name,
-        u.task_priority,
-        u.form_key,
-        u.claim_time,
-        u.approve_time,
-        u.due_time,
-        u.create_time,
-        (
-        SELECT
-        GROUP_CONCAT(
-        IF (
-        t.task_assignee_real_name != '',
-        t.task_assignee_real_name,
-        t.task_owner_real_name
-        )
-        )
+            a.apply_id,
+            a.apply_sn,
+            a.proc_inst_id,
+            a.apply_title,
+            a.apply_user_id,
+            a.apply_real_name,
+            a.apply_dept_id,
+            a.apply_dept_code,
+            a.apply_dept_name,
+            a.apply_company_id,
+            a.apply_company_code,
+            a.apply_company_name,
+            a.tenant_id,
+            a.process_id,
+            a.process_key,
+            a.process_name,
+            a.definition_id,
+            a.system,
+            a.platform,
+            a.parent_apply_id,
+            a.apply_status,
+            a.remarks,
+            a.valid_state,
+            a.operator_id,
+            a.operator_name,
+            a.create_time as applyDate,
+            a.update_time,
+            u.task_id,
+            u.act_task_id,
+            u.task_name,
+            u.task_node_code,
+            u.parent_task_id,
+            u.task_status,
+            u.role_group_code,
+            u.role_code,
+            u.role_name,
+            u.task_owner_user_id,
+            u.task_owner_real_name,
+            u.task_assignee_real_name,
+            u.task_priority,
+            u.form_key,
+            u.claim_time,
+            u.approve_time,
+            u.due_time,
+            u.create_time,
+            (
+            SELECT
+            GROUP_CONCAT(
+            IF (
+            t.task_assignee_real_name != '',
+            t.task_assignee_real_name,
+            t.task_owner_real_name
+            )
+            )
+            FROM
+            bpm_user_task t
+            WHERE
+            t.apply_id = a.apply_id
+            AND t.task_status IN (1, 2)
+            ) AS currentApproveName
         FROM
-        bpm_user_task t
+            bpm_apply a left join
+            bpm_user_task u on a.apply_id = u.apply_id
         WHERE
-        t.apply_id = a.apply_id
-        AND t.task_status IN (1, 2)
-        ) AS currentApproveName
-        FROM
-        bpm_apply a left join
-        bpm_user_task u on a.apply_id = u.apply_id
-        WHERE
-        a.apply_status > 1
+            a.apply_status > 1
 
-        <if test="applyId != null and applyId > 0">
-            and a.apply_id = #{applyId}
-        </if>
+            <if test="applyId != null and applyId > 0">
+                and a.apply_id = #{applyId}
+            </if>
 
-        <if test="processId != null and processId > 0">
-            and a.process_id = #{processId}
-        </if>
-        <if test="procInstId != null and procInstId != ''">
-            and a.proc_inst_id = #{procInstId}
-        </if>
-        <if test="tenantId != null and tenantId != ''">
-            and a.tenant_id = #{tenantId}
-        </if>
-        <if test="applySn != null and applySn != ''">
-            and a.apply_sn = #{applySn}
-        </if>
+            <if test="processId != null and processId > 0">
+                and a.process_id = #{processId}
+            </if>
+            <if test="procInstId != null and procInstId != ''">
+                and a.proc_inst_id = #{procInstId}
+            </if>
+            <if test="tenantId != null and tenantId != ''">
+                and a.tenant_id = #{tenantId}
+            </if>
+            <if test="applySn != null and applySn != ''">
+                and a.apply_sn = #{applySn}
+            </if>
 
-        <if test="processIdList != null and processIdList.size > 0">
-            and a.process_id in
-            <foreach collection="processIdList" item="item" index="index" open="(" close=")" separator=",">
-                #{item}
-            </foreach>
-        </if>
-        <if test="applyStatus != null and applyStatus  > 0">
-            and a.apply_status = #{applyStatus}
-        </if>
-        <if test="companyCode != null and companyCode  !=''">
-            and a.apply_company_code like CONCAT (#{companyCode},'%')
-        </if>
-        <if test="deptCode != null and deptCode  !=''">
-            and a.apply_dept_code like CONCAT (#{deptCode},'%')
-        </if>
-        <if test="applyRealName != null and applyRealName  !=''">
-            and a.apply_real_name = #{applyRealName}
-        </if>
-        <if test="applyUserId != null and applyUserId  > 0">
-            and a.apply_user_id = #{applyUserId}
-        </if>
-        <if test="currentUserId != null and currentUserId  > 0">
-            and a.apply_user_id = #{currentUserId}
-        </if>
-        <if test="seachName != null and seachName !=''">
-            AND CONCAT(a.apply_sn ,a.apply_user_id,a.apply_real_name) LIKE CONCAT('%',
-            #{seachName}, '%')
-        </if>
-        <if test="applyStartDate != null ">
-            and a.create_time >= #{applyStartDate}
-        </if>
-        <if test="applyEndDate != null ">
-            and a.create_time &lt;= #{applyEndDate}
-        </if>
-        <!--<if test="paltform != null and paltform != ''">-->
-            <!--and a.paltform = #{paltform}-->
-        <!--</if>-->
-        <!--<if test="system != null and system != ''">-->
-            <!--and a.system = #{system}-->
-        <!--</if>-->
-        <if test="lastId != null and lastId > 0">
-            and a.apply_id > #{lastId}
-        </if>
-        group by a.apply_id
+            <if test="processIdList != null and processIdList.size > 0">
+                and a.process_id in
+                <foreach collection="processIdList" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="applyStatus != null and applyStatus  > 0">
+                and a.apply_status = #{applyStatus}
+            </if>
+            <if test="companyCode != null and companyCode  !=''">
+                and a.apply_company_code like CONCAT (#{companyCode},'%')
+            </if>
+            <if test="deptCode != null and deptCode  !=''">
+                and a.apply_dept_code like CONCAT (#{deptCode},'%')
+            </if>
+            <if test="applyRealName != null and applyRealName  !=''">
+                and a.apply_real_name = #{applyRealName}
+            </if>
+            <if test="applyUserId != null and applyUserId  > 0">
+                and a.apply_user_id = #{applyUserId}
+            </if>
+            <if test="currentUserId != null and currentUserId  > 0">
+                and a.apply_user_id = #{currentUserId}
+            </if>
+            <if test="seachName != null and seachName !=''">
+                AND CONCAT(a.apply_sn ,a.apply_user_id,a.apply_real_name) LIKE CONCAT('%',
+                #{seachName}, '%')
+            </if>
+            <if test="applyStartDate != null ">
+                and a.create_time >= #{applyStartDate}
+            </if>
+            <if test="applyEndDate != null ">
+                and a.create_time &lt;= #{applyEndDate}
+            </if>
+            <!--<if test="paltform != null and paltform != ''">-->
+                <!--and a.paltform = #{paltform}-->
+            <!--</if>-->
+            <!--<if test="system != null and system != ''">-->
+                <!--and a.system = #{system}-->
+            <!--</if>-->
+            <if test="lastId != null and lastId > 0">
+                and a.apply_id > #{lastId}
+            </if>
+        <!--group by a.apply_id-->
         order by a.create_time desc
     </select>
 
     <select id="getHaveDoListByCondition" parameterType="com.pig.easy.bpm.api.dto.request.UserTaskInfoQueryDTO"
             resultType="com.pig.easy.bpm.api.dto.response.UserTaskInfoDTO">
         SELECT
-        a.apply_id,
-        a.apply_sn,
-        a.proc_inst_id,
-        a.apply_title,
-        a.apply_user_id,
-        a.apply_real_name,
-        a.apply_dept_id,
-        a.apply_dept_code,
-        a.apply_dept_name,
-        a.apply_company_id,
-        a.apply_company_code,
-        a.apply_company_name,
-        a.tenant_id,
-        a.process_id,
-        a.process_key,
-        a.process_name,
-        a.definition_id,
-        a.system,
-        a.platform,
-        a.parent_apply_id,
-        a.apply_status,
-        a.remarks,
-        a.valid_state,
-        a.operator_id,
-        a.operator_name,
-        a.create_time as applyDate,
-        a.update_time,
-        u.task_id,
-        u.act_task_id,
-        u.task_name,
-        u.task_node_code,
-        u.parent_task_id,
-        u.task_status,
-        u.role_group_code,
-        u.role_code,
-        u.role_name,
-        u.task_owner_user_id,
-        u.task_owner_real_name,
-        u.task_assignee_real_name,
-        u.task_priority,
-        u.form_key,
-        u.claim_time,
-        u.approve_time,
-        u.create_time,
-        u.due_time,
-        (
-        SELECT
-        GROUP_CONCAT(
-        IF (
-        t.task_assignee_real_name != '',
-        t.task_assignee_real_name,
-        t.task_owner_real_name
-        )
-        )
+            a.apply_id,
+            a.apply_sn,
+            a.proc_inst_id,
+            a.apply_title,
+            a.apply_user_id,
+            a.apply_real_name,
+            a.apply_dept_id,
+            a.apply_dept_code,
+            a.apply_dept_name,
+            a.apply_company_id,
+            a.apply_company_code,
+            a.apply_company_name,
+            a.tenant_id,
+            a.process_id,
+            a.process_key,
+            a.process_name,
+            a.definition_id,
+            a.system,
+            a.platform,
+            a.parent_apply_id,
+            a.apply_status,
+            a.remarks,
+            a.valid_state,
+            a.operator_id,
+            a.operator_name,
+            a.create_time as applyDate,
+            a.update_time,
+            u.task_id,
+            u.act_task_id,
+            u.task_name,
+            u.task_node_code,
+            u.parent_task_id,
+            u.task_status,
+            u.role_group_code,
+            u.role_code,
+            u.role_name,
+            u.task_owner_user_id,
+            u.task_owner_real_name,
+            u.task_assignee_real_name,
+            u.task_priority,
+            u.form_key,
+            u.claim_time,
+            u.approve_time,
+            u.create_time,
+            u.due_time,
+            (
+            SELECT
+                GROUP_CONCAT(
+                    IF (
+                        t.task_assignee_real_name != '',
+                        t.task_assignee_real_name,
+                        t.task_owner_real_name
+                    )
+                )
+            FROM
+            bpm_user_task t
+            WHERE
+            t.apply_id = a.apply_id
+            AND t.task_status IN (1, 2)
+            ) AS currentApproveName
         FROM
-        bpm_user_task t
+            bpm_apply a,
+            bpm_user_task u
         WHERE
-        t.apply_id = a.apply_id
-        AND t.task_status IN (1, 2)
-        ) AS currentApproveName
-        FROM
-        bpm_apply a,
-        bpm_user_task u
-        WHERE
-        a.apply_id = u.apply_id
-        AND u.task_status = 3
-        AND u.task_type != 'start'
+            a.apply_id = u.apply_id
+            AND u.task_status = 3
+            AND u.task_type != 'start'
 
-        <if test="taskId != null and taskId > 0">
-            and u.task_id = #{taskId}
-        </if>
-        <if test="applyId != null and applyId > 0">
-            and u.apply_id = #{applyId}
-        </if>
-        <if test="taskNodeCode != null and taskNodeCode > 0">
-            and u.task_node_code = #{taskNodeCode}
-        </if>
-        <if test="processId != null and processId > 0">
-            and u.process_id = #{processId}
-        </if>
-        <if test="procInstId != null and procInstId != ''">
-            and u.proc_inst_id = #{procInstId}
-        </if>
-        <if test="tenantId != null and tenantId != ''">
-            and a.tenant_id = #{tenantId}
-        </if>
-        <if test="applySn != null and applySn != ''">
-            and a.apply_sn = #{applySn}
-        </if>
-        <if test="taskName != null and taskName != ''">
-            and u.task_name = #{taskName}
-        </if>
-        <if test="processIdList != null and processIdList.size > 0">
-            and a.process_id in
-            <foreach collection="processIdList" item="item" index="index" open="(" close=")" separator=",">
-                #{item}
-            </foreach>
-        </if>
-        <if test="applyStatus != null and applyStatus  > 0">
-            and a.apply_status = #{applyStatus}
-        </if>
-        <if test="companyCode != null and companyCode  !=''">
-            and a.apply_company_code like CONCAT (#{companyCode},'%')
-        </if>
-        <if test="deptCode != null and deptCode  !=''">
-            and a.apply_dept_code like CONCAT (#{deptCode},'%')
-        </if>
-        <if test="applyRealName != null and applyRealName  !=''">
-            and a.apply_real_name = #{applyRealName}
-        </if>
-        <if test="applyUserId != null and applyUserId  > 0">
-            and a.apply_user_id = #{applyUserId}
-        </if>
-        <if test="seachName != null and seachName !=''">
-            AND CONCAT(a.apply_sn ,a.apply_user_id,a.apply_real_name) LIKE CONCAT('%',
-            #{seachName}, '%')
-        </if>
-        <if test="taskStatus != null and taskStatus  > 0">
-            and u.task_status #{taskStatus}
-        </if>
-        <if test="currentUserId != null and currentUserId > 0">
-            and #{currentUserId} = u.task_assignee_user_id
-        </if>
-        <if test="applyStartDate != null ">
-            and a.create_time >= #{applyStartDate}
-        </if>
-        <if test="applyEndDate != null ">
-            and a.create_time &lt;= #{applyEndDate}
-        </if>
-        <!--<if test="paltform != null and paltform != ''">-->
-            <!--and a.paltform = #{paltform}-->
-        <!--</if>-->
-        <!--<if test="system != null and system != ''">-->
-            <!--and a.system = #{system}-->
-        <!--</if>-->
-        <if test="lastId != null and lastId > 0">
-            and u.task_id > #{lastId}
-        </if>
-        group by a.apply_id
+            <if test="taskId != null and taskId > 0">
+                and u.task_id = #{taskId}
+            </if>
+            <if test="applyId != null and applyId > 0">
+                and u.apply_id = #{applyId}
+            </if>
+            <if test="taskNodeCode != null and taskNodeCode > 0">
+                and u.task_node_code = #{taskNodeCode}
+            </if>
+            <if test="processId != null and processId > 0">
+                and u.process_id = #{processId}
+            </if>
+            <if test="procInstId != null and procInstId != ''">
+                and u.proc_inst_id = #{procInstId}
+            </if>
+            <if test="tenantId != null and tenantId != ''">
+                and a.tenant_id = #{tenantId}
+            </if>
+            <if test="applySn != null and applySn != ''">
+                and a.apply_sn = #{applySn}
+            </if>
+            <if test="taskName != null and taskName != ''">
+                and u.task_name = #{taskName}
+            </if>
+            <if test="processIdList != null and processIdList.size > 0">
+                and a.process_id in
+                <foreach collection="processIdList" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="applyStatus != null and applyStatus  > 0">
+                and a.apply_status = #{applyStatus}
+            </if>
+            <if test="companyCode != null and companyCode  !=''">
+                and a.apply_company_code like CONCAT (#{companyCode},'%')
+            </if>
+            <if test="deptCode != null and deptCode  !=''">
+                and a.apply_dept_code like CONCAT (#{deptCode},'%')
+            </if>
+            <if test="applyRealName != null and applyRealName  !=''">
+                and a.apply_real_name = #{applyRealName}
+            </if>
+            <if test="applyUserId != null and applyUserId  > 0">
+                and a.apply_user_id = #{applyUserId}
+            </if>
+            <if test="seachName != null and seachName !=''">
+                AND CONCAT(a.apply_sn ,a.apply_user_id,a.apply_real_name) LIKE CONCAT('%',
+                #{seachName}, '%')
+            </if>
+            <if test="taskStatus != null and taskStatus  > 0">
+                and u.task_status #{taskStatus}
+            </if>
+            <if test="currentUserId != null and currentUserId > 0">
+                and #{currentUserId} = u.task_assignee_user_id
+            </if>
+            <if test="applyStartDate != null ">
+                and a.create_time >= #{applyStartDate}
+            </if>
+            <if test="applyEndDate != null ">
+                and a.create_time &lt;= #{applyEndDate}
+            </if>
+            <!--<if test="paltform != null and paltform != ''">-->
+                <!--and a.paltform = #{paltform}-->
+            <!--</if>-->
+            <!--<if test="system != null and system != ''">-->
+                <!--and a.system = #{system}-->
+            <!--</if>-->
+            <if test="lastId != null and lastId > 0">
+                and u.task_id > #{lastId}
+            </if>
+        <!-- group by a.apply_id-->
         order by u.approve_time desc
     </select>
 
