@@ -174,7 +174,9 @@ public class ProcessDetailServiceImpl extends BaseServiceImpl<ProcessDetailMappe
         }
 
         ProcessDetailDO tempProcessDetail = processDetailDO;
-        tempProcessDetail.setDefinitionId(((DeploymentEntityImpl) deployment).getDeployedArtifacts(ProcessDefinitionEntityImpl.class).get(0).getId());
+        ProcessDefinitionEntityImpl deploy = ((DeploymentEntityImpl) deployment).getDeployedArtifacts(ProcessDefinitionEntityImpl.class).get(0);
+        //tempProcessDetail.setDefinitionId(deploy.getDeploymentId());
+        tempProcessDetail.setDefinitionId(deploy.getId());
         if (CommonUtils.evalLong(processPublishDTO.getOperatorId()) > 0) {
             tempProcessDetail.setOperatorId(processPublishDTO.getOperatorId());
         }
